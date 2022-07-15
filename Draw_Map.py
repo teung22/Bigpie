@@ -42,12 +42,14 @@ def main():
     print("11111: ", latitude, longitude)
     if int(input_cnt) >= 3:
         map = folium.Map(location=[latitude, longitude], zoom_start=15)
-        iframe = folium.IFrame(str(input_cnt)+'개의 공연이 있어 혼잡이 예상됩니다.'+'<br>'+' 여유로운 충전소를 찾으세요!', width = 300, height = 70)
-        popup = folium.Popup(iframe, max_width=230)
+        iframe = folium.IFrame('오늘 총 ' + '<b>'+str(input_cnt)+'</b>'+'개의 공연이 있어 혼잡이 예상됩니다.'+'<br>'+' 여유로운 충전소를 찾으세요!', width = 350, height = 80)
+        popup = folium.Popup(iframe, max_width=350)
         folium.Marker(location=[latitude, longitude], icon=folium.Icon(icon='star',color='red'), tooltip = input_name, popup = popup ).add_to(map)
     else:
         map = folium.Map(location=[latitude, longitude], zoom_start=16)
-        folium.Marker(location=[latitude, longitude], icon=folium.Icon(icon='star',color='orange'), tooltip = input_name).add_to(map)
+        iframe = folium.IFrame('오늘 총 ' + '<b>'+str(input_cnt)+'</b>'+'개의 공연이 있습니다.' ,width = 230, height = 80)
+        popup = folium.Popup(iframe, max_width=350)
+        folium.Marker(location=[latitude, longitude], icon=folium.Icon(icon='star',color='orange'), tooltip = input_name, popup = popup).add_to(map)
 
     #2. 데이터 가져오기 from MongoDB
     ############################################
