@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<!-- <script src="./jQuery.js"></script> --> 
+
+<style> 
+  div {
+    width:595px;
+    height:431px;
+    margin: 0 auto;  /* loader 가운데정렬 */
+    display: flex;
+    animation-name: start ;
+    animation-duration: 4s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+   
+  @keyframes start {
+    0%   {left:0px; top:0px;background-image: url(./start_img/img_01.png);}
+    15%   {left:0px; top:0px;background-image: url(./start_img/img_02.png);}
+    30%   {left:0px; top:0px;background-image: url(./start_img/img_03.png);}
+    40%   {left:0px; top:0px;background-image: url(./start_img/img_04.png);}
+    50%   {left:0px; top:0px;background-image: url(./start_img/img_05.png);}
+    60%  {left:0px; top:0px;background-image: url(./start_img/img_06.png);}
+    80%  {left:0px; top:0px;background-image: url(./start_img/img_07.png);}
+    100%  {left:0px; top:0px;background-image: url(./start_img/img_08.png);}
+  }
+  
+  
+  </style>
+  </head>
+  <body>
+   
+  <div id="wrap">
+    <div id="start" style="cursor: pointer;" onclick="location.href='./index.html';"></div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "async": "^3.2.4",
+    "axios": "^0.27.2",
+    "circular-json": "^0.5.9",
+    "cookie-parser": "^1.4.6",
+    "date-utils": "^1.2.21",
+    "express": "^4.18.1",
+    "json": "^11.0.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.4.4",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "python-shell": "^3.0.1",
+    "request": "^2.88.2",
+    "sys": "^0.0.1"
+  }
+}
