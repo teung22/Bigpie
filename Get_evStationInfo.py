@@ -18,7 +18,7 @@ result = []
 
 def get_totalCount_fromUrl(zCode):
     url='http://apis.data.go.kr/B552584/EvCharger/getChargerInfo'
-    parameter =  '?ServiceKey='+ '%2F%2Bglz6QFB%2FO7bL3CiFz70AGpxqvCmRFcSS5K8R0HQBRUUSdMPnhq1gwzRtBq1Yr%2B3gzGcs9kP0FPLrRDj8VFXg%3D%3D'
+    parameter =  '?ServiceKey='+ servickeyEVcharger #본인의 공공데이터 key값
     parameter += '&pageNo=1'
     parameter += '&numOfRows=10'
     #Optional Zcode 11 (서울) 41 (경기)
@@ -40,7 +40,7 @@ def get_totalCount_fromUrl(zCode):
 
 def get_request_url(pageNo, numOfRows, zCode):
     url='http://apis.data.go.kr/B552584/EvCharger/getChargerInfo'
-    parameter =  '?ServiceKey='+ '%2F%2Bglz6QFB%2FO7bL3CiFz70AGpxqvCmRFcSS5K8R0HQBRUUSdMPnhq1gwzRtBq1Yr%2B3gzGcs9kP0FPLrRDj8VFXg%3D%3D'
+    parameter =  '?ServiceKey='+ servickeyEVcharger #본인의 공공데이터 key값
     parameter += '&pageNo=' + str(pageNo)
     parameter += '&numOfRows=' + str(numOfRows)
     #Optional
