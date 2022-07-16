@@ -19,8 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://3.36.89.204:27017/bigpie')
-
+mongoose.connect('mongodb://localhost:27017/bigpie')//본인의 ec2 locahost주소 
 var mongo = require('./routes/mongo.js')
 app.use('/', mongo)
 
