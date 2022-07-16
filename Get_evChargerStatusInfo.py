@@ -14,7 +14,7 @@ result = []
 
 def get_totalCount_fromUrl(zCode):
     url='http://apis.data.go.kr/B552584/EvCharger/getChargerStatus'
-    parameter =  '?ServiceKey='+ '%2F%2Bglz6QFB%2FO7bL3CiFz70AGpxqvCmRFcSS5K8R0HQBRUUSdMPnhq1gwzRtBq1Yr%2B3gzGcs9kP0FPLrRDj8VFXg%3D%3D'
+    parameter =  '?ServiceKey='+ servickeyEVcharger #본인의 공공데이터 key값
     parameter += '&pageNo=1'
     parameter += '&numOfRows=10'
     parameter += '&period=10'
@@ -36,7 +36,7 @@ def get_totalCount_fromUrl(zCode):
 
 def get_request_url(pageNo, numOfRows, zCode):
     url='http://apis.data.go.kr/B552584/EvCharger/getChargerStatus'
-    parameter =  '?ServiceKey='+ '%2F%2Bglz6QFB%2FO7bL3CiFz70AGpxqvCmRFcSS5K8R0HQBRUUSdMPnhq1gwzRtBq1Yr%2B3gzGcs9kP0FPLrRDj8VFXg%3D%3D'
+    parameter =  '?ServiceKey='+ serviceKeyEVcharger #본인의 공공데이터 key
     parameter += '&pageNo=' + str(pageNo)
     parameter += '&numOfRows=' + str(numOfRows)
     parameter += '&period=10'
@@ -80,7 +80,7 @@ def main():
     print('totalCount ====',totalCount )
     nEndPage = math.ceil(totalCount/numOfRows)
 
-    connect_to = pymongo.MongoClient("3.36.89.204",27017)
+    connect_to = pymongo.MongoClient("localhost",27017) #본인의 EC2 로컬호스트주소
     mongodb = connect_to.bigpie.evstations
 
     for pageNo in range(1, nEndPage+1):
