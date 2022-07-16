@@ -13,12 +13,12 @@ var now = today.toFormat("YYYYMMDDHH");
 const { PythonShell } = require("python-shell");
 const async = require("async");
 var mysql = require("mysql") ;
-var connection = mysql.createConnection({
-  host :'database-1.csmitlu4hfs1.ap-northeast-2.rds.amazonaws.com',
-  user : 'admin',
-  password : 'admin1234',
-  database : 'st_db'
-})
+// var connection = mysql.createConnection({
+//   host : 
+//   user : 'admin',
+//   password : 
+//   database : 'st_db'
+// })
 //let controller = require("/map")
 
 const lainfo = '';
