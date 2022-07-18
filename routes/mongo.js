@@ -185,7 +185,7 @@ router.get('/get', function(req, res, next) {
                 if(docs[i]['충전기상태'] == '2'){
                   if(firstflag){
                     count.push({충전소명 : docs[0]['충전소명'], 충전소ID : docs[0]['충전소ID'], 위도 : docs[0]['위도'],  경도 : docs[0]['경도'],
-                               충전기상태 : docs[0]['충전기상태'], 주소 :  docs[0]['주소'], 전화번호 : docs[0]['전화번호'], 주차료무료 : docs[0]['주차료무료'], 안내 : '1' });
+                               충전기상태 : docs[0]['충전기상태'], 주소 :  docs[0]['주소'], 전화번호 : docs[0]['전화번호'], 사용시간 : docs[i]['사용시간'], 주차료무료 : docs[0]['주차료무료'], 안내 : '1' });
 
                     firstflag = 0;
                     cLength ++;
@@ -200,7 +200,7 @@ router.get('/get', function(req, res, next) {
                       if(j == cLength-1){
                         //console.log("마지막count:: 충전소명 없으면 장소명 추가:", count[j]['충전소ID'], " != ",docs[i]['충전소ID']  )
                         count.push({충전소명 : docs[i]['충전소명'], 충전소ID : docs[i]['충전소ID'],  위도 : docs[i]['위도'],  경도 : docs[i]['경도'],
-                        충전기상태 : docs[i]['충전기상태'],주소 :  docs[i]['주소'], 전화번호 : docs[i]['전화번호'], 주차료무료 : docs[i]['주차료무료'], 안내 : '1' });
+                        충전기상태 : docs[i]['충전기상태'],주소 :  docs[i]['주소'], 전화번호 : docs[i]['전화번호'], 사용시간 : docs[i]['사용시간'], 주차료무료 : docs[i]['주차료무료'], 안내 : '1' });
                         cLength ++;
                       }
                     }
