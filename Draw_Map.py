@@ -54,19 +54,26 @@ def main():
         lat = i['위도']
         long= i['경도']
 
+        if (i['주차료무료']=='Y'):
+            isFree = '무료'
+        elif (i['주차료무료']=='N'):
+            isFree = '유료'
+        else : #주차료정보 없는 경우
+            isFree = '정보없음'
+
         print("LAT & LONG", lat, long)
         if int(i['안내']) >= 5:
-            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']))
+            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>주차료</b> : ' +isFree)
             popup = folium.Popup(iframe, min_width=300, max_width=350)
             folium.Marker(location=[lat, long], icon=folium.Icon(icon='flag',color='darkblue'), tooltip= str(i['안내'])+'대', popup=popup).add_to(map)
 
         elif int(i['안내'])>= 3:
-            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']))
+            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>주차료</b> : ' +isFree)
             popup = folium.Popup(iframe, min_width=300, max_width=350)
             folium.Marker(location=[lat, long], icon=folium.Icon(icon='flag',color='blue'), tooltip=str(i['안내'])+'대', popup=popup).add_to(map)
 
         else:
-            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']))
+            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>주차료</b> : ' +isFree)
             popup = folium.Popup(iframe, min_width=300, max_width=350)
             folium.Marker(location=[lat, long], icon=folium.Icon(icon='flag',color='lightblue'), tooltip=str(i['안내'])+'대', popup=popup).add_to(map)
 
