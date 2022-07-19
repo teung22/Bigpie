@@ -39,13 +39,13 @@ def main():
     input_name = sys.argv[4]
     input_cnt = sys.argv[5]
     availableCount = json.loads(sys.argv[6])
-    input_stgid = sys.argv[7]  # 0720 stg_id :연시설 ID
+    input_stgid = sys.argv[7]  # 0720 stg_id :공연시설 ID
     #availableCount = json.loads(json.dumps(sys.argv[6]), ensure_ascii=True)
     # #bottle
     # name = input
    
     #0720 공연정보API :: IP고정
-    input_stgid = functrim(input_stgid) #0720 input 값의 쉼표 제거 
+    input_stgid = functrim(input_stgid) #0720 ' 제거 
     iframe="<iframe width='350' height=300 src='http://3.38.37.58:3000/getPrfInfo?input="+input_stgid+"&cnt="+input_cnt+"' title='공연정보' frameborder=0 allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>"
 
     if int(input_cnt) >= 3:
