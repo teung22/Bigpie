@@ -99,6 +99,7 @@ router.get('/getcode', function(req,res,next) {
               var result_la = data[0].LA;
               var result_lo = data[0].LO;
               var result_prfcnt = data[0].CNT;
+              var result_stgid = data[0].STG_ID;   //#0720 공연장 ID 추가
 
              //
               console.log(result_zscode,result_name,result_la, result_lo,result_prfcnt)  ;
@@ -112,9 +113,10 @@ router.get('/getcode', function(req,res,next) {
               //   if (err) { return console.log(err) }
               //   res.send(CircularJSON.stringify(body))
               // })
-              //get 으로 Parameter 넘기기 start
+              //get 으로 Parameter 넘기기 start 
+              //0720 &stg_id="+result_stgid 
                  tmp_urls = "http://54.215.35.186:8000/get?"
-                 queryParams = "input="+result_zscode+"&stg_name="+result_name+"&stg_la="+result_la+"&stg_lo="+result_lo+"&stg_cnt="+result_prfcnt ;
+                 queryParams = "input="+result_zscode+"&stg_name="+result_name+"&stg_la="+result_la+"&stg_lo="+result_lo+"&stg_cnt="+result_prfcnt+"&stg_id="+result_stgid  ;
 
                  urls = encodeURI(tmp_urls + queryParams)
                  console.log(urls)
@@ -159,6 +161,7 @@ router.get('/get', function(req, res, next) {
     var input_la = req.query.stg_la;    //공연장 위도
     var input_lo = req.query.stg_lo;
     var input_cnt = req.query.stg_cnt;  //공연장 공연개수
+    var input_stgid = req.query.stg_id ;    //0720 공연장id 추가
 
 
    if(input=='') {
@@ -225,7 +228,7 @@ router.get('/get', function(req, res, next) {
 
                 let options = {
                   scriptPath: "/data/node/evInfo",
-                  args: [input,input_la,input_lo,input_name,input_cnt,JSON.stringify(count)]
+                  args: [input,input_la,input_lo,input_name,input_cnt,JSON.stringify(count),JSON.stringify(input_stgid)]   //#0720 공연장 ID 추가
                 };
                 PythonShell.run("Draw_Map.py", options, function(err, data) {
                   if (err) throw err;
