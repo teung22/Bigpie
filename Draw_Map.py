@@ -25,6 +25,11 @@ import requests
 # #bottle
 # @route('/get/<name>')
 # def index(name=""):
+# 0720 : 쉼표 없애는 함수 
+def functrim(parm):
+    if(parm[0]==parm[-1] ) and parm.startswith(("'",'"')) :
+        return parm[1:-1]
+    return parm ;
 
 def main():
 
@@ -34,21 +39,26 @@ def main():
     input_name = sys.argv[4]
     input_cnt = sys.argv[5]
     availableCount = json.loads(sys.argv[6])
+    input_stgid = sys.argv[7]  # 0720 stg_id :연시설 ID
     #availableCount = json.loads(json.dumps(sys.argv[6]), ensure_ascii=True)
     # #bottle
     # name = input
+   
+    #0720 공연정보API :: IP고정
+    input_stgid = functrim(input_stgid) #0720 input 값의 쉼표 제거 
+    iframe="<iframe width='350' height=300 src='http://3.38.37.58:3000/getPrfInfo?input="+input_stgid+"&cnt="+input_cnt+"' title='공연정보' frameborder=0 allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>"
 
     if int(input_cnt) >= 3:
         map = folium.Map(location=[latitude, longitude], zoom_start=15)
-        iframe = folium.IFrame('오늘 총 ' + '<b>'+str(input_cnt)+'</b>'+'개의 공연이 있어 혼잡이 예상됩니다.'+'<br>'+' 여유로운 충전소를 찾으세요!', width = 350, height = 80)
+       # iframe = folium.IFrame('오늘 총 ' + '<b>'+str(input_cnt)+'</b>'+'개의 공연이 있어 혼잡이 예상됩니다.'+'<br>'+' 여유로운 충전소를 찾으세요!', width = 350, height = 80)
         popup = folium.Popup(iframe, max_width=350)
         folium.Marker(location=[latitude, longitude], icon=folium.Icon(icon='star',color='red'), tooltip = input_name, popup = popup ).add_to(map)
     else:
         map = folium.Map(location=[latitude, longitude], zoom_start=16)
-        iframe = folium.IFrame('오늘 총 ' + '<b>'+str(input_cnt)+'</b>'+'개의 공연이 있습니다.' ,width = 230, height = 80)
+       # iframe = folium.IFrame('오늘 총 ' + '<b>'+str(input_cnt)+'</b>'+'개의 공연이 있습니다.' ,width = 230, height = 80)
         popup = folium.Popup(iframe, max_width=350)
         folium.Marker(location=[latitude, longitude], icon=folium.Icon(icon='star',color='orange'), tooltip = input_name, popup = popup).add_to(map)
-
+ 
 
     for i in availableCount:
         lat = i['위도']
@@ -62,23 +72,37 @@ def main():
             isFree = '정보없음'
 
         print("LAT & LONG", lat, long)
+        #0720 충전소 pop-up html 및 스타일시트 추가
+        template =" <table style='width:100%' border=0><tr>"
+        template = template+"<th style='background: #008000	;color :#FFFFFF; padding:5px;height : 25px;border-bottom: 1px solid gray;font-family:Malgun Gothic;font-size:12px'>충전소명 : "+ str(i['충전소명']) + "</th>"
+        template = template+"</tr><tr><td align=left style='padding:5px;border-bottom: 1px solid gray;font-family:Malgun Gothic;font-size:12px;line-height:1.5;'>"
+        template = template+"<ul>"
+        template = template+" <li>주소 : "+str(i['주소'])+"</li>"
+        template = template+" <li><font color='#dc143c'> 충전가능대수 : <b> "+str(i['안내']) +"대</b></font></li>"
+        template = template+" <li>전화번호 : "+str(i['전화번호']) +"</li>"
+        template = template+" <li>사용시간 : "+str(i['사용시간']) +"</li>"
+        template = template+" <li>주차료 : "+isFree +"</li>"
+        template = template+"</ul>"
+        template = template+"</td></tr>"
+        template = template+"</table>"
+        
         if int(i['안내']) >= 5:
-            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>사용시간</b> : ' +str(i['사용시간']) + '<br><br>'+'<b>주차료</b> : '+ isFree, height = 260)
+          # iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>사용시간</b> : ' +str(i['사용시간']) + '<br><br>'+'<b>주차료</b> : '+ isFree, height = 260)
+            iframe = folium.IFrame(template, height =200)
             popup = folium.Popup(iframe, min_width=320,max_width=400)
             folium.Marker(location=[lat, long], icon=folium.Icon(icon='flag',color='darkblue'), tooltip= str(i['안내'])+'대', popup=popup).add_to(map)
 
         elif int(i['안내'])>= 3:
-            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>사용시간</b> : ' +str(i['사용시간']) + '<br><br>' +'<b>주차료</b> : '+ isFree, height = 260)
+          #  iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>사용시간</b> : ' +str(i['사용시간']) + '<br><br>' +'<b>주차료</b> : '+ isFree, height = 260)
+            iframe = folium.IFrame(template, height =200)
             popup = folium.Popup(iframe, min_width=320, max_width=400)
             folium.Marker(location=[lat, long], icon=folium.Icon(icon='flag',color='blue'), tooltip=str(i['안내'])+'대', popup=popup).add_to(map)
 
         else:
-            iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>사용시간</b> : ' +str(i['사용시간']) + '<br><br>'+'<b>주차료</b> : '+ isFree, height = 260)
+          #  iframe = folium.IFrame('<b>충전소명</b> : ' + str(i['충전소명']) + '<br><br>' + '<b>주소</b> : ' + str(i['주소']) + '<br><br>'+ '<b>충전가능 대수</b> : ' + str(i['안내'])+'대'+ '<br><br>' +'<b>전화번호</b> : ' +str(i['전화번호']) + '<br><br>' +'<b>사용시간</b> : ' +str(i['사용시간']) + '<br><br>'+'<b>주차료</b> : '+ isFree, height = 260)
+            iframe = folium.IFrame(template, height =200)
             popup = folium.Popup(iframe, min_width=320, max_width=400)
             folium.Marker(location=[lat, long], icon=folium.Icon(icon='flag',color='lightblue'), tooltip=str(i['안내'])+'대', popup=popup).add_to(map)
-
-
-
 
     LocateControl().add_to(map)
     map.save('public/map_station2.html')
