@@ -6,8 +6,25 @@
 <link rel="stylesheet" href="index.css">
 <script type="text/javascript" src="jQuery.js"></script>
 <script type="text/javascript">
+$(function(){
+	$("#search").click(function(){
+   	 var input = $("#where").val() ;
+		 if(input == ""){
+			 alert("공연장을입력하십시오.")
+			 $("#where").focus();
+	     return;
+	   }else{
+		  document.targetURL.location.href="/getcode?input="+input ;
+	   } ;
+	});
 
-
+	$("input").keydown(function(e){
+	if(e.keyCode==13){
+			$("#search").click();
+			return false ;
+		}
+	});
+});
 
 </script>
 </head>
