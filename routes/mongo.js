@@ -113,8 +113,8 @@ router.get('/getcode', function(req,res,next) {
               //   if (err) { return console.log(err) }
               //   res.send(CircularJSON.stringify(body))
               // })
-              //get 으로 Parameter 넘기기 start 
-              //0720 &stg_id="+result_stgid 
+              //get 으로 Parameter 넘기기 start
+              //0720 &stg_id="+result_stgid
                  tmp_urls = "http://54.215.35.186:8000/get?"
                  queryParams = "input="+result_zscode+"&stg_name="+result_name+"&stg_la="+result_la+"&stg_lo="+result_lo+"&stg_cnt="+result_prfcnt+"&stg_id="+result_stgid  ;
 
@@ -176,7 +176,7 @@ router.get('/get', function(req, res, next) {
 
        var cLength = 0;
        var count=[];
-
+       var countTypeInfo=[];
         async.waterfall([
           function (callback) {
             EvStation.find({"zscode":input},function(err,docs){
@@ -188,8 +188,8 @@ router.get('/get', function(req, res, next) {
                 if(docs[i]['충전기상태'] == '2'){
                   if(firstflag){
                     count.push({충전소명 : docs[0]['충전소명'], 충전소ID : docs[0]['충전소ID'], 위도 : docs[0]['위도'],  경도 : docs[0]['경도'],
-                               충전기상태 : docs[0]['충전기상태'], 주소 :  docs[0]['주소'], 전화번호 : docs[0]['전화번호'], 사용시간 : docs[i]['사용시간'], 주차료무료 : docs[0]['주차료무료'], 안내 : '1' });
-
+                               충전기상태 : docs[0]['충전기상태'], 주소 :  docs[0]['주소'], 전화번호 : docs[0]['전화번호'], 사용시간 : docs[0]['사용시간'], 주차료무료 : docs[0]['주차료무료'], 안내 : '1' });
+                    countTypeInfo.push({충전소ID : docs[0]['충전소ID'], 충전기ID : docs[0]['충전기ID'], 충전기타입 : docs[0]['충전기타입']})
                     firstflag = 0;
                     cLength ++;
                   }
@@ -198,6 +198,7 @@ router.get('/get', function(req, res, next) {
                   //count 배열 내 같은 충전소명 없으면 장소명 추가
 
                   for(var j=0; j<cLength; j++){
+
                     if(count[j]['충전소ID'] !=docs[i]['충전소ID']){
 
                       if(j == cLength-1){
@@ -210,12 +211,16 @@ router.get('/get', function(req, res, next) {
                     else {
                       //console.log("count 배열 내 같은 충전소명 있으면 충전가능대수만 1 추가:" )
                       //console.log(":::::::",count[j]['충전기상태'])
+
                       let temp=parseInt(count[j]['안내'])
                       count[j]['안내'] = temp +1;
-                      console.log("count[",j,"]['안내']::::" , count[j]['안내'])
+
+
+
                       break;
                     }
                   }
+                  countTypeInfo.push({충전소ID : docs[i]['충전소ID'], 충전기ID : docs[i]['충전기ID'], 충전기타입 : docs[i]['충전기타입']})
 
                 }
               }
@@ -228,7 +233,7 @@ router.get('/get', function(req, res, next) {
 
                 let options = {
                   scriptPath: "/data/node/evInfo",
-                  args: [input,input_la,input_lo,input_name,input_cnt,JSON.stringify(count),JSON.stringify(input_stgid)]   //#0720 공연장 ID 추가
+                  args: [input,input_la,input_lo,input_name,input_cnt,JSON.stringify(count),JSON.stringify(input_stgid),JSON.stringify(countTypeInfo) ]   //#0720 공연장 ID 추가
                 };
                 PythonShell.run("Draw_Map.py", options, function(err, data) {
                   if (err) throw err;
