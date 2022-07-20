@@ -39,7 +39,7 @@ def main():
     input_cnt = sys.argv[5]
     availableCount = json.loads(sys.argv[6])
     input_stgid = sys.argv[7]  # 0720 stg_id :공연시설 ID
-    chargerTypeInfo = json.loads(sys.argv[8])  # 0720 stg_id :공연시설 ID
+    chargerTypeInfo = json.loads(sys.argv[8])  # 0720 충전기타입 정보
     #availableCount = json.loads(json.dumps(sys.argv[6]), ensure_ascii=True)
     # #bottle
     # name = input
