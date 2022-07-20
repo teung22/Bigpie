@@ -251,6 +251,7 @@ router.get('/get', function(req, res, next) {
                   <title>Result</title>
                   <meta charset="utf-8">
                 </head>
+                <link rel="stylesheet" href="index.css">
                 <body>
                   <table border = "1" margin:auto; text-align:center;>
                  <tr>
@@ -258,22 +259,22 @@ router.get('/get', function(req, res, next) {
                  </tr>
                   <table border = "1" width = 1000px;>
                    <tr>
-                   <th>충전소명</th>
-                   <th>충전소ID</th>
-                   <th>충전가능 대수</th>
-                   <th>주소</th>
-                   <th>전화번호</th>
+                   <th id="evthead">충전소명</th>
+                   <th id="evthead">충전소ID</th>
+                   <th id="evthead">충전가능 대수</th>
+                   <th id="evthead">주소</th>
+                   <th id="evthead">전화번호</th>
                    </tr>
                    `;
 
                      for (var i =0; i<cLength; i++){
                        template += `
                          <tr>
-                         <th>${count[i]['충전소명']}</th>
-                         <th>${count[i]['충전소ID']}</th>
-                         <th>${count[i]['안내']}</th>
-                         <th>${count[i]['주소']}</th>
-                         <th>${count[i]['전화번호']}</th>
+                         <td id="evtd">${count[i]['충전소명']}</td>
+                         <td id="evtd" align="center">${count[i]['충전소ID']}</td>
+                         <td id="evtd" align="center">${count[i]['안내']}</td>
+                         <td id="evtd">${count[i]['주소']}</td>
+                         <td id="evtd">${count[i]['전화번호']}</td>
                          </tr>
                          `;
                      }
