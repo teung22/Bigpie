@@ -2,28 +2,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공연장 주변 전기차충전소 추천</title>
 <link rel="stylesheet" href="index.css">
 <script type="text/javascript" src="jQuery.js"></script>
 <script type="text/javascript">
 $(function(){
 	$("#search").click(function(){
-   	 var input = $("#where").val() ;
-		 if(input == ""){
-			 alert("공연장을입력하십시오.")
-			 $("#where").focus();
-	     return;
-	   }else{
-		  document.targetURL.location.href="/getcode?input="+input ;
-	   } ;
+		var input = $("#where").val() ;
+			if(input == ""){
+	    	alert("공연장을입력하십시오.")
+				$("#where").focus();
+			return;
+			}else{
+				document.targetURL.location.href="/getcode?input="+input ;
+	 	 };
 	});
-
 	$("input").keydown(function(e){
 	if(e.keyCode==13){
 			$("#search").click();
 			return false ;
 		}
 	});
+
 });
 
 </script>
@@ -40,16 +40,21 @@ $(function(){
 			<td align="center" id="searchArea">
 			<form name='mongoform'>
 				주소 (ex:샤롯데)  <input id="where" placeholder="공연장을 입력하세요." type="text" name="input">
-				<button type="button" value="입력" onclick='document.targetURL.location.href="/getcode?input="+document.mongoform.input.value'><img src="./img/mg1.png"></button>
+				<img src="./img/mg1.png" id="search" style="cursor:pointer;" valign="bottom">
+				<!--document.targetURL.location.href="/getcode?input="+document.mongoform.input.value*/-->
 			</form>
 			</td>
 		</tr>
-		
+		<!--<tr>
+			<td align="center">
+				<iframe align = "center" name="targetURL1" class="iframe-preview center1" width="1000px" height="400px" src=" ./map_station.html"></iframe>
+			</td>
+		</tr>-->
 	</table>
 	<table id="siteContent">
 		<tr>
 			<td align="center" id="siteContentTd">
-				<iframe align = "center" name="targetURL" class="iframe-preview center" width="1000px" height="1500px" src="http://3.36.89.204:8000/api/list"></iframe>
+				<iframe id="iframeid" align = "center" name="targetURL" class="iframe-preview center" width="1000px" height="1500px" src="http://localhost:8000/api/list"></iframe> #본인의 localhost 주소  
 			</td>
 		</tr>
 	</table>
