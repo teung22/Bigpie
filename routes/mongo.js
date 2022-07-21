@@ -120,7 +120,7 @@ router.get('/getcode', function(req,res,next) {
               //   res.send(CircularJSON.stringify(body))
               // })
               //get 으로 Parameter 넘기기 start
-                 tmp_urls = "http://3.36.89.204:8000/get?"
+                 tmp_urls = "http://localhost:8000/get?" #본인의_localhost_주소
                  queryParams = "input="+result_zscode+"&stg_name="+result_name+"&stg_la="+result_la+"&stg_lo="+result_lo+"&stg_cnt="+result_prfcnt+"&stg_id="+result_stgid;
 
                  urls = encodeURI(tmp_urls + queryParams)
