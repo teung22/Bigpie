@@ -53,11 +53,17 @@ router.get('/api/list', function(req, res, next) {
       <!doctype html>
       <html>
       <head>
+      <link rel="stylesheet" href="index.css">
         <title>Result</title>
         <meta charset="utf-8">
+      <style type="text/css">
+        body {
+          overflow: hidden;
+        }
+      </style>
       </head>
       <body>
-          <iframe align = "center" name="targetURL1" class="iframe-preview center1" width="980px" height="1500px" src="../intro.html"></iframe>
+          <iframe id="iframeid" align = "center" name="targetURL1" class="iframe-preview center1" width="970px" height="1500px" src="../intro.html"></iframe>
       </body>
       </html>
      `;
@@ -114,9 +120,8 @@ router.get('/getcode', function(req,res,next) {
               //   res.send(CircularJSON.stringify(body))
               // })
               //get 으로 Parameter 넘기기 start
-              //0720 &stg_id="+result_stgid
-                 tmp_urls = "http://54.215.35.186:8000/get?"
-                 queryParams = "input="+result_zscode+"&stg_name="+result_name+"&stg_la="+result_la+"&stg_lo="+result_lo+"&stg_cnt="+result_prfcnt+"&stg_id="+result_stgid  ;
+                 tmp_urls = "http://3.36.89.204:8000/get?"
+                 queryParams = "input="+result_zscode+"&stg_name="+result_name+"&stg_la="+result_la+"&stg_lo="+result_lo+"&stg_cnt="+result_prfcnt+"&stg_id="+result_stgid;
 
                  urls = encodeURI(tmp_urls + queryParams)
                  console.log(urls)
@@ -159,7 +164,7 @@ router.get('/get', function(req, res, next) {
     var input = req.query.input;        //지역코드
     var input_name =req.query.stg_name; //공연장 이름
     var input_la = req.query.stg_la;    //공연장 위도
-    var input_lo = req.query.stg_lo;
+    var input_lo = req.query.stg_lo;    //공연장 경도
     var input_cnt = req.query.stg_cnt;  //공연장 공연개수
     var input_stgid = req.query.stg_id ;    //0720 공연장id 추가
 
@@ -172,11 +177,12 @@ router.get('/get', function(req, res, next) {
         });
       } else {
 
-        var template;
+       var template;
 
        var cLength = 0;
        var count=[];
        var countTypeInfo=[];
+
         async.waterfall([
           function (callback) {
             EvStation.find({"zscode":input},function(err,docs){
@@ -188,7 +194,7 @@ router.get('/get', function(req, res, next) {
                 if(docs[i]['충전기상태'] == '2'){
                   if(firstflag){
                     count.push({충전소명 : docs[0]['충전소명'], 충전소ID : docs[0]['충전소ID'], 위도 : docs[0]['위도'],  경도 : docs[0]['경도'],
-                               충전기상태 : docs[0]['충전기상태'], 주소 :  docs[0]['주소'], 전화번호 : docs[0]['전화번호'], 사용시간 : docs[0]['사용시간'], 주차료무료 : docs[0]['주차료무료'], 안내 : '1' });
+                               충전기상태 : docs[0]['충전기상태'], 충전기타입 : docs[0]['충전기타입'], 주소 :  docs[0]['주소'], 전화번호 : docs[0]['전화번호'], 사용시간 : docs[0]['사용시간'], 주차료무료 : docs[0]['주차료무료'], 안내 : '1' });
                     countTypeInfo.push({충전소ID : docs[0]['충전소ID'], 충전기ID : docs[0]['충전기ID'], 충전기타입 : docs[0]['충전기타입']})
                     firstflag = 0;
                     cLength ++;
@@ -198,30 +204,25 @@ router.get('/get', function(req, res, next) {
                   //count 배열 내 같은 충전소명 없으면 장소명 추가
 
                   for(var j=0; j<cLength; j++){
-
                     if(count[j]['충전소ID'] !=docs[i]['충전소ID']){
 
                       if(j == cLength-1){
                         //console.log("마지막count:: 충전소명 없으면 장소명 추가:", count[j]['충전소ID'], " != ",docs[i]['충전소ID']  )
                         count.push({충전소명 : docs[i]['충전소명'], 충전소ID : docs[i]['충전소ID'],  위도 : docs[i]['위도'],  경도 : docs[i]['경도'],
-                        충전기상태 : docs[i]['충전기상태'],주소 :  docs[i]['주소'], 전화번호 : docs[i]['전화번호'], 사용시간 : docs[i]['사용시간'], 주차료무료 : docs[i]['주차료무료'], 안내 : '1' });
+                        충전기상태 : docs[i]['충전기상태'], 충전기타입 : docs[0]['충전기타입'], 주소 :  docs[i]['주소'], 전화번호 : docs[i]['전화번호'], 사용시간 : docs[i]['사용시간'], 주차료무료 : docs[i]['주차료무료'], 안내 : '1' });
                         cLength ++;
                       }
                     }
                     else {
                       //console.log("count 배열 내 같은 충전소명 있으면 충전가능대수만 1 추가:" )
                       //console.log(":::::::",count[j]['충전기상태'])
-
                       let temp=parseInt(count[j]['안내'])
                       count[j]['안내'] = temp +1;
-
-
-
+                      console.log("count[",j,"]['안내']::::" , count[j]['안내'])
                       break;
                     }
                   }
                   countTypeInfo.push({충전소ID : docs[i]['충전소ID'], 충전기ID : docs[i]['충전기ID'], 충전기타입 : docs[i]['충전기타입']})
-
                 }
               }
 
@@ -233,7 +234,7 @@ router.get('/get', function(req, res, next) {
 
                 let options = {
                   scriptPath: "/data/node/evInfo",
-                  args: [input,input_la,input_lo,input_name,input_cnt,JSON.stringify(count),JSON.stringify(input_stgid),JSON.stringify(countTypeInfo) ]   //#0720 공연장 ID 추가
+                  args: [input,input_la,input_lo,input_name,input_cnt,JSON.stringify(count),JSON.stringify(input_stgid),JSON.stringify(countTypeInfo) ] //#0720 공연장 ID 추가
                 };
                 PythonShell.run("Draw_Map.py", options, function(err, data) {
                   if (err) throw err;
@@ -248,16 +249,19 @@ router.get('/get', function(req, res, next) {
                 <!doctype html>
                 <html>
                 <head>
+                <link rel="stylesheet" href="index.css">
                   <title>Result</title>
                   <meta charset="utf-8">
                 </head>
-                <link rel="stylesheet" href="index.css">
                 <body>
-                  <table border = "1" margin:auto; text-align:center;>
+                  <table>
+                  <tr>
+                  <img src="./img/marker_info.png" valign="bottom" width="500px" >
+                  </tr>
                  <tr>
-                   <iframe align = "center" name="targetURL1" class="iframe-preview center1" width="1000px" height="500px" src="./map_station2.html"></iframe>
+                   <iframe id ="iframeid" align = "center" name="targetURL1" class="iframe-preview center1" width="1000px" height="500px" src="./map_station2.html"></iframe>
                  </tr>
-                  <table border = "1" width = 1000px;>
+                  <table id="evlist01" width = 1000px;>
                    <tr>
                    <th id="evthead">충전소명</th>
                    <th id="evthead">충전소ID</th>
@@ -270,11 +274,11 @@ router.get('/get', function(req, res, next) {
                      for (var i =0; i<cLength; i++){
                        template += `
                          <tr>
-                         <td id="evtd">${count[i]['충전소명']}</td>
-                         <td id="evtd" align="center">${count[i]['충전소ID']}</td>
-                         <td id="evtd" align="center">${count[i]['안내']}</td>
-                         <td id="evtd">${count[i]['주소']}</td>
-                         <td id="evtd">${count[i]['전화번호']}</td>
+                         <th id="evtd">${count[i]['충전소명']}</th>
+                         <th id="evtd">${count[i]['충전소ID']}</th>
+                         <th id="evtd">${count[i]['안내']}</th>
+                         <th id="evtd">${count[i]['주소']}</th>
+                         <th id="evtd">${count[i]['전화번호']}</th>
                          </tr>
                          `;
                      }
